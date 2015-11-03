@@ -6,6 +6,7 @@ Epi::init('api');
 
 /* 라 우 팅 */
 getRoute()->get('/', 'showEndpoints');
+getRoute()->get('/version', 'showVersion');
 
 
 getRoute()->run();
@@ -28,6 +29,11 @@ function showEndpoints() //시작점에 가까움.(c언어에서 main도 end poi
 			  <li><a href="/version">/version</a> -> (print the version of the api)</li>
 			  <li><a href="/users">/users</a> -> (print each user)</li>
 			</ul>';
+}
+
+
+function showVersion(){
+	return 3;
 }
 
 ?>

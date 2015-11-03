@@ -7,7 +7,7 @@ Epi::init('api');
 /* 라 우 팅 */
 getRoute()->get('/', 'showEndpoints');
 getRoute()->get('/version', 'showVersion');
-getRoute()->get('/users', 'getUserList');
+getRoute()->get('/users', 'getUserList',EpiApi::external);
 
 getRoute()->run();
 
@@ -39,9 +39,9 @@ function showVersion(){
 function getUserList()
 {
   return array(
-    array('username' => '이연재'),
-    array('username' => '허하진'),
-    array('username' => '윤서영')
+    array('name' => '이연재'),
+    array('name' => '허하진'),
+    array('name' => '윤서영')
   );
 }
 

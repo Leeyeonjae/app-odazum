@@ -1,13 +1,13 @@
 <?php
 //chdir('..');
-include_once '../src/Epi.php';
-Epi::setPath('base', '../src');
+include_once './src/Epi.php';
+Epi::setPath('base', './src');
 Epi::init('api');
 
 /* 라 우 팅 */
 getRoute()->get('/', 'showEndpoints');
 getRoute()->get('/version', 'showVersion');
-
+getRoute()->get('/users', 'getUserList');
 
 getRoute()->run();
 
@@ -34,6 +34,15 @@ function showEndpoints() //시작점에 가까움.(c언어에서 main도 end poi
 
 function showVersion(){
 	echo 3;
+}
+
+function getUserList()
+{
+  return array(
+    array('username' => '이연재'),
+    array('username' => '허하진'),
+    array('username' => '윤서영')
+  );
 }
 
 ?>

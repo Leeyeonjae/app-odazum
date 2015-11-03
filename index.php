@@ -33,7 +33,7 @@ function showEndpoints() //시작점에 가까움.(c언어에서 main도 end poi
 
 
 function showVersion(){
-	return 3;
+	echo 3;
 }
 
 ?>

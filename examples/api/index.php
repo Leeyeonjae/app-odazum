@@ -5,7 +5,7 @@ Epi::setPath('base', '../src');
 Epi::init('api');
 
 /*
- * We create 3 normal routes (think of these are user viewable pages).
+ * We create 3 normal routes(접속 경로를 마음대로 만들수 있다.) (think of these are user viewable pages).
  * We also create 2 api routes (this of these as data methods).
  *  The beauty of the api routes are they can be accessed natively from PHP
  *    or remotely via HTTP.

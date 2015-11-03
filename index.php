@@ -1,13 +1,33 @@
 <?php
-echo "Hello World?,  안뇽 연재<br  />";
-echo "<div style ='color::red'>하이루~</div>";
+//chdir('..');
+include_once './src/Epi.php';
+Epi::setPath('base', './src');
+Epi::init('api');
 
-for( $i = 0;$i<100; $i ++){
-	echo "아하하<br>";
-	?>
-	우하하<?=$i?><br> 
-	<?php
+/* 라 우 팅 */
+getRoute()->get('/', 'showEndpoints');
 
+
+getRoute()->run();
+
+
+/*
+ * ******************************************************************************************
+ * Define functions and classes which are executed by EpiCode based on the $_['routes'] array
+ * ******************************************************************************************
+ */
+
+function showEndpoints() //시작점에 가까움.(c언어에서 main도 end point)
+{
+
+	//'$변수' -> '$변수라고 출력됨.
+	//"$변수" -> 변수 내용이 출력됨.
+	echo '빠라바라밤 API <br>';
+	  echo '<ul>
+			  <li><a href="/">/</a> -> (home)</li>
+			  <li><a href="/version">/version</a> -> (print the version of the api)</li>
+			  <li><a href="/users">/users</a> -> (print each user)</li>
+			</ul>';
 }
-phpinfo();
+
 ?>

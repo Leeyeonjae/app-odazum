@@ -94,7 +94,7 @@ function getUserList()
 function get_items_recently_list( $count = 10 ){
 	$items = array();
 
-	for($i = 0; $i < count; $i ++){
+	for($i = 0; $i < $count; $i ++){
 		array_push( $items,
 				array(
 					'id' => $i,

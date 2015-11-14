@@ -3,8 +3,14 @@
 include_once './src/Epi.php';
 Epi::setPath('base', './src');
 Epi::init('api');
-include_once './db.php';
-EpiDatabase::employ('mysql',$db['db'],$db['host'],$db['user'],$db['pw']);
+Epi::init('route','database');
+
+define('DB_HOST', getenv('OPENSHIFT_MYSQL_DB_HOST'));
+define('DB_PORT',getenv('OPENSHIFT_MYSQL_DB_PORT')); 
+define('DB_USER',getenv('OPENSHIFT_MYSQL_DB_USERNAME'));
+define('DB_PASS',getenv('OPENSHIFT_MYSQL_DB_PASSWORD'));
+define('DB_NAME',getenv('OPENSHIFT_GEAR_NAME'));
+EpiDatabase::employ('mysql', DB_NAME, DB_HOST, DB_USER, DB_PASS); 
 
 //전체 가져오기(최신순, wish순, 조회순)
 getRoute()->get('/items/recently/?(\d+)?','get_items_recently_list',EpiApi::external);
@@ -62,18 +68,23 @@ getRoute()->run();
 
 
 function get_items_recently_list( $count = 10 ){
-	$items = array();
 
-	for($i = 0; $i < $count; $i ++){
-		array_push( $items,
-				array(
-					'id' => $i,
-					'name' => '연미령',
-					'tel' => '010-1234-5678',
-					'address' => '서울시 관악구 호암로546(신림동)'
-				)
-		);
-	}
+	getDatabase()->execute('SET NAMES utf8');
+	$rs = getDatabase()->all('SELECT id, title, image, click, wish, date  FROM posts as p limit ' . $count );
+	$items = array();
+	foreach( $rs as $key => $r ){
+			array_push( $items,
+					array(
+							'id' => $r['id'],
+							'title' => $r['title'],
+							'image' => $r['image'],
+							'click' => $r['click'],
+							'wish' => $r['wish'],
+							'date' => $r['date'],
+					)
+			);
+		}
+
 	return $items;
 
 }
@@ -142,7 +153,7 @@ function post_wish_minus($post_id){
 function get_product_list($post_id){
 }
 
-function get_wishitems{
+function get_wishitems(){
 }
 
 function search_items_recently_list($count){

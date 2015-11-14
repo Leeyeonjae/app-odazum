@@ -67,7 +67,7 @@ getRoute()->run();
  */
 
 
-function get_items_recently_list( $count = 10 ){
+function get_items_recently_list( $count ){
 
 	getDatabase()->execute('SET NAMES utf8');
 	$rs = getDatabase()->all('SELECT id, title, image, click, wish, date  FROM posts as p limit ' . $count );
@@ -89,10 +89,45 @@ function get_items_recently_list( $count = 10 ){
 
 }
 function get_items_mostwish_list($count){
+	getDatabase()->execute('SET NAMES utf8');
+	$rs = getDatabase()->all('SELECT id, title, image, click, wish, date, category FROM posts as p order by wish desc limit ' . $count );
+	$items = array();
+	foreach( $rs as $key => $r ){
+			array_push( $items,
+					array(
+							'id' => $r['id'],
+							'title' => $r['title'],
+							'image' => $r['image'],
+							'category' =>$r['category'],				
+							'click' => $r['click'],
+							'wish' => $r['wish'],							
+							'date' => $r['date'],		
+					)
+			);
+		}
 
+	return $items;
 }
 function get_items_mostview_list($count){
-	
+	getDatabase()->execute('SET NAMES utf8');
+	$rs = getDatabase()->all('SELECT id, title, image, click, wish, date, category FROM posts as p order by click desc limit ' . $count );
+	$items = array();
+	foreach( $rs as $key => $r ){
+			array_push( $items,
+					array(
+							'id' => $r['id'],
+							'title' => $r['title'],
+							'image' => $r['image'],
+							'category' =>$r['category'],				
+							'click' => $r['click'],
+							'wish' => $r['wish'],							
+							'date' => $r['date'],
+							
+					)
+			);
+		}
+
+	return $items;
 }
 
 function get_fashionclothes_recently_list($count){

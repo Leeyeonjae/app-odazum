@@ -53,12 +53,10 @@ getRoute()->get('/post/(\d+)/products','get_product_list',EpiApi::external);
 getRoute()->post('/wishitems','get_wishitems',EpiApi::external);
 
 //맞춤검색-> 
-getRoute()->post('/items/recently/?(\d+)?','search_items_recently_list',EpiApi::external);
-getRoute()->post('/items/mostwish/?(\d+)?','search_items_mostwish_list',EpiApi::external);
-getRoute()->post('/items/mostview/?(\d+)?','search_items_mostview_list',EpiApi::external);
+getRoute()->post('/items/?(\d+)?','search_items',EpiApi::external);
 
 
-
+getRoute()->get('/randomtags/?(\d+)?','random_tags',EpiApi::external);
 getRoute()->run();
 
 
@@ -505,14 +503,17 @@ function get_wishitems(){
 
 
 }
+/*
+function search_items($count){
 
-function search_items_recently_list(){
-/*$_POST['age']
+$_POST['age']
 $_POST['gender']
 $_POST['tag']
+$_POST['maxprice']
+$_POST['orderby']
 
 getDatabase()->execute('SET NAMES utf8');
-$rs = getDatabase()->all('SELECT DISTINCT p.id,p.title,p.image,min(pro.price) FROM posts p,posts_tag t, posts_gender g,posts_age a, products pro WHERE p.id = g.p_id and p.id = t.p_id  and p.id = a.p_id and p.id=pro.post and  g.g_id ='.$gender ' and a.a_id = '.$age ' and t.t_id  in('.$tag ' ) group by p.id HAVING min(pro.price) <= '.$minprice ' limte ' . $count 'order by p.id');
+$rs = getDatabase()->all('SELECT DISTINCT p.id,p.title,p.image FROM posts p,posts_tag t, posts_gender g,posts_age a, products pro WHERE p.id = g.p_id and p.id = t.p_id  and p.id = a.p_id and p.id=pro.post and  g.g_id ='.$gender ' and a.a_id = '.$age ' and t.t_id  in('.$tag ' ) group by p.id HAVING min(pro.price) <= '.$maxprice ' limte ' . $count 'order by p.id');
 
 $items = array();
 foreach( $rs as $key => $r ){
@@ -526,51 +527,30 @@ foreach( $rs as $key => $r ){
 	}
 
 return $items;
-*/
+
 }
-function search_items_mostwish_list($count){
-/*$_POST['age']
-$_POST['gender']
-$_POST['tag']
 
-getDatabase()->execute('SET NAMES utf8');
-$rs = getDatabase()->all('SELECT DISTINCT p.id,p.title,p.image,min(pro.price) FROM posts p,posts_tag t, posts_gender g,posts_age a, products pro WHERE p.id = g.p_id and p.id = t.p_id  and p.id = a.p_id and p.id=pro.post and  g.g_id ='.$gender ' and a.a_id = '.$age ' and t.t_id  in('.$tag ' ) group by p.id HAVING min(pro.price) <= '.$minprice ' limte ' . $count 'order by p.wish');
+*/
 
-$items = array();
-foreach( $rs as $key => $r ){
-		array_push( $items,
-				array(
-						'id' => $r['id'],
-						'title' => $r['title'],
-						'image' => $r['image'],
-				)
-		);
+function random_tags( $count = 6 ){
+
+	//getDatabase()->execute('SET NAMES utf8');
+	$sql = 'SELECT no,name FROM tag order by rand() ';
+	if($count > 0){
+		$sql .= ' limit ' . $count;
 	}
+	$rs = getDatabase()->all($sql);
+	$items = array();
+	foreach( $rs as $key => $r ){
+			array_push( $items,
+					array(
+							'no' => $r['no'],
+							'name' => $r['name'],						
+					)
+			);
+		}
 
-return $items;
-*/
+	return $items;
+
 }
-function search_items_mostview_list($count){
-/*$_POST['age']
-$_POST['gender']
-$_POST['tag']
-
-getDatabase()->execute('SET NAMES utf8');
-$rs = getDatabase()->all('SELECT DISTINCT p.id,p.title,p.image,min(pro.price) FROM posts p,posts_tag t, posts_gender g,posts_age a, products pro WHERE p.id = g.p_id and p.id = t.p_id  and p.id = a.p_id and p.id=pro.post and  g.g_id ='.$gender ' and a.a_id = '.$age ' and t.t_id  in('.$tag ' ) group by p.id HAVING min(pro.price) <= '.$minprice ' limte ' . $count 'order by p.click');
-
-$items = array();
-foreach( $rs as $key => $r ){
-		array_push( $items,
-				array(
-						'id' => $r['id'],
-						'title' => $r['title'],
-						'image' => $r['image'],
-				)
-		);
-	}
-
-return $items;
-*/
-}
-
 ?>

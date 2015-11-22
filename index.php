@@ -73,7 +73,7 @@ getRoute()->run();
 function get_items_recently_list( $count ){
 
 	//getDatabase()->execute('SET NAMES utf8');
-	$sql = 'SELECT id, title, image, click, wish, date,category  FROM posts as p ';
+	$sql = 'SELECT id, title, image, click FROM posts as p order by id desc ';
 	if($count > 0){
 		$sql .= ' limit ' . $count;
 	}
@@ -85,10 +85,7 @@ function get_items_recently_list( $count ){
 							'id' => $r['id'],
 							'title' => $r['title'],
 							'image' => $r['image'],
-							'category' =>$r['category'],		
 							'click' => $r['click'],
-							'wish' => $r['wish'],
-							'date' => $r['date'],
 					)
 			);
 		}
@@ -98,18 +95,18 @@ function get_items_recently_list( $count ){
 }
 function get_items_mostwish_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT id, title, image, click, wish, date, category FROM posts as p order by wish desc limit ' . $count );
+	$sql = 'SELECT id, title, image FROM posts as p order by wish desc ';
+	if($count > 0){
+		$sql .= ' limit ' . $count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
 					array(
 							'id' => $r['id'],
 							'title' => $r['title'],
-							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['date'],		
+							'image' => $r['image'],	
 					)
 			);
 		}
@@ -118,19 +115,18 @@ function get_items_mostwish_list($count){
 }
 function get_items_mostview_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT id, title, image, click, wish, date, category FROM posts as p order by click desc limit ' . $count );
+	$sql = 'SELECT id, title, image FROM posts as p order by click desc ';
+	if($count > 0){
+		$sql .= ' limit ' . $count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
 					array(
 							'id' => $r['id'],
 							'title' => $r['title'],
-							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['date'],
-							
+							'image' => $r['image'],							
 					)
 			);
 		}
@@ -142,18 +138,18 @@ function get_items_mostview_list($count){
 //패션의류
 function get_fashionclothes_recently_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=1 order by p.id limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title FROM posts p, category c WHERE p.category = c.id and c.id=1 order by p.id desc ';
+	if($count >0){
+		$sql .= 'limit ' . $count;
+	}
+	$rs = getDatabase()->all ($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
 					array(
 							'id' => $r['id'],
 							'title' => $r['title'],
-							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
+							'image' => $r['image'],							
 					)
 			);
 		}
@@ -162,7 +158,11 @@ function get_fashionclothes_recently_list($count){
 }
 function get_fashionclothes_mostwish_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=1 order by p.wish desc limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=1 order by p.wish desc ';
+	if($count > 0){
+		$sql .= 'limit ' . $count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
@@ -170,10 +170,6 @@ function get_fashionclothes_mostwish_list($count){
 							'id' => $r['id'],
 							'title' => $r['title'],
 							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
 					)
 			);
 		}
@@ -182,7 +178,11 @@ function get_fashionclothes_mostwish_list($count){
 }
 function get_fashionclothes_mostview_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=1 order by p.click desc limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image  FROM posts p, category c WHERE p.category = c.id and c.id=1 order by p.click desc ';
+	if($count > 0){
+		$sql .= ' limit ' . $count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
@@ -190,10 +190,6 @@ function get_fashionclothes_mostview_list($count){
 							'id' => $r['id'],
 							'title' => $r['title'],
 							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
 					)
 			);
 		}
@@ -204,18 +200,18 @@ function get_fashionclothes_mostview_list($count){
 //패션잡화
 function get_fashiongoods_recently_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=2 order by p.id limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=2 order by p.id desc ';
+	if($count > 0 ){
+			$sql .= ' limit ' . $count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
 					array(
 							'id' => $r['id'],
 							'title' => $r['title'],
-							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
+							'image' => $r['image'],							
 					)
 			);
 		}
@@ -225,7 +221,12 @@ function get_fashiongoods_recently_list($count){
 }
 function get_fashiongoods_mostwish_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=2 order by p.wish desc limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=2 order by p.wish desc ';
+	if($count > 0 ) {
+		$sql .= 'limit ' .$count;
+	}
+
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
@@ -233,10 +234,6 @@ function get_fashiongoods_mostwish_list($count){
 							'id' => $r['id'],
 							'title' => $r['title'],
 							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
 					)
 			);
 		}
@@ -245,18 +242,18 @@ function get_fashiongoods_mostwish_list($count){
 }
 function get_fashiongoods_mostview_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=2 order by p.click desc limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=2 order by p.click desc ';
+	if($count > 0) {
+		$sql .= 'limit ' .$count;
+	}
+	$rs = getDatabase()->all( $sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
 					array(
 							'id' => $r['id'],
 							'title' => $r['title'],
-							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
+							'image' => $r['image'],							
 					)
 			);
 		}
@@ -267,7 +264,11 @@ function get_fashiongoods_mostview_list($count){
 //미용
 function get_beautygoods_recently_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=3 order by p.id limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=3 order by p.id desc ';
+	if($count > 0) {
+		$sql .= 'limit ' .$count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
@@ -275,10 +276,6 @@ function get_beautygoods_recently_list($count){
 							'id' => $r['id'],
 							'title' => $r['title'],
 							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
 					)
 			);
 		}
@@ -287,7 +284,11 @@ function get_beautygoods_recently_list($count){
 }
 function get_beautygoods_mostwish_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=3 order by p.wish desc limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=3 order by p.wish desc ';
+	if($count > 0) {
+		$sql .= 'limit ' .$count;
+	}
+	$rs = getDatabase()->all( $sql );
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
@@ -295,10 +296,6 @@ function get_beautygoods_mostwish_list($count){
 							'id' => $r['id'],
 							'title' => $r['title'],
 							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
 					)
 			);
 		}
@@ -307,18 +304,18 @@ function get_beautygoods_mostwish_list($count){
 }
 function get_beautygoods_mostview_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=3 order by p.click desc limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=3 order by p.click desc ' ;
+	if($count > 0) {
+		$sql .= 'limit ' .$count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
 					array(
 							'id' => $r['id'],
 							'title' => $r['title'],
-							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
+							'image' => $r['image'],						
 					)
 			);
 		}
@@ -329,7 +326,11 @@ function get_beautygoods_mostview_list($count){
 //식품
 function get_foods_recently_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=4 order by p.id limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=4 order by p.id desc ';
+	if($count > 0) {
+		$sql .= 'limit ' .$count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
@@ -337,10 +338,6 @@ function get_foods_recently_list($count){
 							'id' => $r['id'],
 							'title' => $r['title'],
 							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
 					)
 			);
 		}
@@ -349,18 +346,18 @@ function get_foods_recently_list($count){
 }
 function get_foods_mostwish_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=4 order by p.wish desc limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=4 order by p.wish desc ';
+	if($count > 0) {
+		$sql .= 'limit ' .$count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
 					array(
 							'id' => $r['id'],
 							'title' => $r['title'],
-							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
+							'image' => $r['image'],						
 					)
 			);
 		}
@@ -369,7 +366,11 @@ function get_foods_mostwish_list($count){
 }
 function get_foods_mostview_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=4 order by p.click desc limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=4 order by p.click desc ';
+	if($count > 0) {
+		$sql .= 'limit ' .$count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
@@ -377,10 +378,6 @@ function get_foods_mostview_list($count){
 							'id' => $r['id'],
 							'title' => $r['title'],
 							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
 					)
 			);
 		}
@@ -391,18 +388,18 @@ function get_foods_mostview_list($count){
 //팬시문구
 function get_fancygoods_recently_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=5 order by p.id limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=5 order by p.id desc ' ;
+	if($count > 0) {
+		$sql .= 'limit ' .$count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
 					array(
 							'id' => $r['id'],
 							'title' => $r['title'],
-							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
+							'image' => $r['image'],										
 					)
 			);
 		}
@@ -411,7 +408,11 @@ function get_fancygoods_recently_list($count){
 }
 function get_fancygoods_mostwish_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=5 order by p.wish desc limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=5 order by p.wish desc ';
+	if($count > 0) {
+		$sql .= 'limit ' .$count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
@@ -419,10 +420,6 @@ function get_fancygoods_mostwish_list($count){
 							'id' => $r['id'],
 							'title' => $r['title'],
 							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
 					)
 			);
 		}
@@ -431,7 +428,11 @@ function get_fancygoods_mostwish_list($count){
 }
 function get_fancygoods_mostview_list($count){
 //	getDatabase()->execute('SET NAMES utf8');
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate,  c.name as category FROM posts p, category c WHERE p.category = c.id and c.id=5 order by p.click desc limit ' . $count );
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=5 order by p.click desc ';
+	if($count > 0) {
+		$sql .= 'limit ' .$count;
+	}
+	$rs = getDatabase()->all($sql);
 	$items = array();
 	foreach( $rs as $key => $r ){
 			array_push( $items,
@@ -439,10 +440,6 @@ function get_fancygoods_mostview_list($count){
 							'id' => $r['id'],
 							'title' => $r['title'],
 							'image' => $r['image'],
-							'category' =>$r['category'],				
-							'click' => $r['click'],
-							'wish' => $r['wish'],							
-							'date' => $r['wdate'],		
 					)
 			);
 		}
@@ -463,6 +460,7 @@ function post_wish_minus($post_id){
 
 function get_product_list($post_id){
 	//getDatabase()->execute('SET NAMES utf8');
+	getDatabase()->execute('UPDATE posts SET click = click+1 where id = ' . $post_id );
 	$rs = getDatabase()->all('SELECT id, name,image,price,text FROM products WHERE post = ' .$post_id );
 	$items = array();
 	foreach( $rs as $key => $r ){
@@ -482,11 +480,12 @@ function get_product_list($post_id){
 }
 
 function get_wishitems(){
+	//getDatabase()->execute('SET NAMES utf8');
 	if($_POST['wish_id_list'].length < 1 ){
 		return  array();
 	}
 
-	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.date as wdate FROM posts p WHERE p.id in('.$_POST['wish_id_list'].') ' );
+	$rs = getDatabase()->all('SELECT p.id as id, p.title as title, p.image as image, p.click as click, p.wish as wish, p.date as wdate FROM posts p WHERE p.id in('.$_POST['wish_id_list'].') ' );
 
 	$items = array();
 	foreach( $rs as $key => $r ){
@@ -495,7 +494,6 @@ function get_wishitems(){
 							'id' => $r['id'],
 							'title' => $r['title'],
 							'image' => $r['image'],
-							'category' =>$r['category'],		
 							'click' => $r['click'],
 							'wish' => $r['wish'],
 							'date' => $r['date'],

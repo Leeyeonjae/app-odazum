@@ -138,7 +138,7 @@ function get_items_mostview_list($count){
 //패션의류
 function get_fashionclothes_recently_list($count){
 	//getDatabase()->execute('SET NAMES utf8');
-	$sql = 'SELECT p.id as id, p.title as title FROM posts p, category c WHERE p.category = c.id and c.id=1 order by p.id desc ';
+	$sql = 'SELECT p.id as id, p.title as title, p.image as image FROM posts p, category c WHERE p.category = c.id and c.id=1 order by p.id desc ';
 	if($count >0){
 		$sql .= 'limit ' . $count;
 	}
